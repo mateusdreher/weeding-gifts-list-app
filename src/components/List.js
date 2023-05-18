@@ -3,12 +3,7 @@ import { Button, Modal } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { listGifts, listGiftsByStatus, selectGift } from '../gifts.service'
 import ModalSuccess from '../components/ModalSucces';
-// interface Present {
-//   id: number;
-//   name: string;
-//   imageUrl: string;
-//   websiteUrl: string;
-// }
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -34,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   name: {
     fontWeight: "bold",
     fontSize: "1.2rem",
-    marginBottom: "0.5rem",
+    marginBottom: "1.5rem",
     color: "#eda787",
   },
   linkBtn: {
@@ -76,8 +71,10 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "5rem",
   },
   gridContainer: {
+    width: "80%",
+    paddingLeft: "10%",
     display: "grid",
-    gridGap: "1rem",
+    gridGap: "2rem",
     [theme.breakpoints.down("xs")]: {
       gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
     },
@@ -98,9 +95,25 @@ const List = () => {
   const [presentsList, setPresentsList] = useState([]);
   const [selectedGift, setSelectedGift] = useState({id: '', name: ''});
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [hasGiftsAvailable, setHasGiftsAvailable] = useState(true);
 
   useEffect(() => {
-    listGifts().then(response => setPresentsList(response))
+    listGiftsByStatus('AVAILABLE')
+      .then(response => {
+        if (response?.length) {
+          setPresentsList(response);
+          console.log(response)
+          setHasGiftsAvailable(true)
+        } else {
+          setPresentsList([]);
+          setHasGiftsAvailable(false)
+          console.log(hasGiftsAvailable)
+        }
+      })
+      .catch((err) => {
+        console.log({err});
+        setPresentsList([]);
+      })
   }, []);
 
 
@@ -125,7 +138,6 @@ const List = () => {
     setInputValue(event.target.value);
   };
   
-
   return (
     <div style={{ padding: "2rem 1rem" }}>
       <div className={classes.justifyCenter}>
@@ -137,7 +149,7 @@ const List = () => {
         {presentsList.map((present) => (
           <div key={present.id} className={classes.root}>
             <div className={classes.imgContainer}>
-              <img className={classes.img} src={present.imageUrl} alt="" />
+              <img className={classes.img} src={present.image} alt="" />
             </div>
             <div>
               <div className={classes.name}>{present.name}</div>
@@ -197,6 +209,9 @@ const List = () => {
             onClick={handleCloseModal}
           >
             x
+          </div>
+          <div>
+            <h4 style={{color: "#fff"}}>Você escolheu comprar o presente <span style={{margin: "0.6rem 0 -0.5rem 0", color: "#eda787", fontStyle: "italic", fontWeight: "bold"}}>{selectedGift.name}</span>, se estiver correto: </h4>
           </div>
           <div
             style={{
@@ -268,6 +283,7 @@ const List = () => {
     </div>
 
   );
+  
 
 };
 

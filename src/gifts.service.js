@@ -2,12 +2,18 @@ const BASE_URL = process.env.API_URL || 'http://localhost:3003';
 
 export function listGifts() {
   return fetch(`${BASE_URL}/gifts/list`)
-	.then((response) => response.json())
-	.then((data) => data.data);
+	.then((response) => {
+		if (!response.ok) {
+			throw new Error('Network response was not ok' + response.status, response.message);
+		}
+
+		return response.json();
+	})
+	.then((data) => data.data)
 }
 
 export function listGiftsByStatus(status) {
-	  return fetch(`${BASE_URL}/gifts/list/status/${status}`)
+	  return fetch(`${BASE_URL}/gifts/status/${status}`)
 	.then((response) => response.json())
 	.then((data) => data.data);
 }

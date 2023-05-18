@@ -48,12 +48,14 @@ const ModalSuccess = ({selectedGift, open, onClose}) => {
     </div>
     <p
       style={{
-      fontSize: "1.5rem",
-      color: "#eda787",
+      fontSize: "1.2rem",
+      color: "#fff",
       textAlign: "center",
       }}
     >
-      Parabéns! Você comprou o presente {selectedGift} pessoalmente, o
+      <span style={{fontSize: "1.7rem"}}>Parabéns!</span><br/><br/>  
+      
+      Você escolheu comprar o presente <br/> <div style={{margin: "0.6rem 0 -0.5rem 0",fontSize: "1.5rem", color: "#eda787", fontStyle: "italic", fontWeight: "bold"}}>{selectedGift}</div><br/> pessoalmente.<br/><br/> O
       casal será avisado. Eles agradecem imensamente o seu carinho.
     </p>
     </div>
