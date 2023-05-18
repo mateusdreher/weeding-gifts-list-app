@@ -56,12 +56,13 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     color: "#eda787",
-    fontFamily: "DynaPuff"
+    fontFamily: "DynaPuff",
+    fontSize: "2.5rem"
   },
   subtitle: {
     color: "#eda787",
     fontFamily: "DynaPuff",
-    fontSize: "0.8rem",
+    fontSize: "0.9rem",
     marginLeft: "0.5rem",
   },
   justifyCenter: {
@@ -85,6 +86,31 @@ const useStyles = makeStyles((theme) => ({
       gridTemplateColumns: "repeat(3, 1fr)",
     },
   },
+  descriptionDiv: {
+    color: "#fff",
+    fontSize: "1.4rem",
+    marginBottom: "2rem",
+    width: "50%",
+    paddingLeft: "25%",
+    textAlign: "justify",
+    lineHeight: "1.5rem",
+  },
+  flowerDiv: {
+    width: "520px",
+    height: "194px",
+    // display: "flex",
+    // alignItems: "center",
+    // justifyContent: "center",
+  },
+  // flowerContainer: {
+  //   width: "520px",
+  //   height: "194px",
+  // },
+  flowerImg: {
+    width: "100%",
+    height: "100%",
+    objectFit: "fill",
+  }
 }));
 
 
@@ -140,11 +166,23 @@ const List = () => {
   
   return (
     <div style={{ padding: "2rem 1rem" }}>
-      <div className={classes.justifyCenter}>
-        <h2 className={classes.title}>Presenteie Me </h2>
-        <p className={classes.subtitle}>Mateus e Patricia</p>
+      
+      <div style={{display: "grid", gridTemplateColumns: "repeat(2)", alignItems: "center", justifyContent: "center"}}>
+      <div className={classes.flowerDiv}>
+          <img style={{opacity: "0.5"}} className={classes.flowerImg} src='assets/flower.png' alt=""></img>
+        </div>
+        <div className={classes.justifyCenter} style={{zIndex: "99", marginTop: "-10rem", marginLeft: "1rem"}}>
+          <p className={classes.title}>Presenteie Me </p>
+          <p className={classes.subtitle}>Mateus e Patricia</p>
+        </div>
+        
       </div>
       
+      
+      <div className={classes.descriptionDiv} >
+      <p style={{color: "#fff"}}>Querido convidado aqui consta nossa lista de presentes que só é possível de existir graças a sua presença, sinta-se a vontade de escolher algum desses itens abaixo e compra-lo pelo site ou pela loja de sua preferência. Em pouco tempo estaremos nos mudando para nossa casa nova e seu presente será de muita valia.</p>
+        
+      </div>
       <div className={classes.gridContainer}>
         {presentsList.map((present) => (
           <div key={present.id} className={classes.root}>
