@@ -29,7 +29,12 @@ const useStyles = makeStyles((theme) => ({
   name: {
     fontWeight: "bold",
     fontSize: "1.2rem",
-    marginBottom: "1.5rem",
+    color: "#eda787",
+  },
+  price: {
+    fontWeight: "bold",
+    fontSize: "1rem",
+    marginBottom: "1rem",
     color: "#eda787",
   },
   linkBtn: {
@@ -195,6 +200,7 @@ const List = () => {
             </div>
             <div>
               <div className={classes.name}>{present.name}</div>
+              <div className={classes.price}>R$ {present.price}</div>
               <div className={classes.buttonGroup}>
                 <Button
                   className={classes.linkBtn}
