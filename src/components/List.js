@@ -124,10 +124,11 @@ const List = () => {
   const [openModal, setOpenModal] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [presentsList, setPresentsList] = useState([]);
-  const [selectedGift, setSelectedGift] = useState({id: '', name: ''});
+  const [selectedGift, setSelectedGift] = useState({id: '', name: '', link: ''});
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [hasGiftsAvailable, setHasGiftsAvailable] = useState(true);
   const [ipInfo, setIpInfo] = useState({});
+  const [byLink, setByLink] = useState(false);
 
   useEffect(() => {
     getIpInfo().then(response => {
@@ -154,14 +155,21 @@ const List = () => {
 
 
   const handleSelectPresent = () => {
-    selectGift(selectedGift.id, inputValue, ipInfo).then(response => {
+    selectGift(selectedGift.id, inputValue, byLink, ipInfo).then(response => {
       setOpenModal(false);
-      setOpenSuccessModal(true);
+      if (!byLink) {
+        setOpenSuccessModal(true);
+        return;
+      }
+
+      window.open(selectedGift.link, '_blank');
     })
   };
   
-  const handleOpenModal = (id, name) => {
-    setSelectedGift({id, name});
+  const handleOpenModal = (id, name, link, byLink = false) => {
+    setSelectedGift({id, name, link});
+    setByLink(byLink);
+    console.log({byLink})
     setOpenModal(true);
   };
 
@@ -205,13 +213,12 @@ const List = () => {
                 <Button
                   className={classes.linkBtn}
                   variant="contained"
-                  href={present.link}
-                  target="_blank"
+                  onClick={() => {handleOpenModal(present.id, present.name, present.link, true)}}
                 >
                   Comprar no site
                 </Button>
-                <Button className={classes.boughtBtn} variant="contained" onClick={() => handleOpenModal(present.id, present.name)}>
-                  Comprer presencialmente
+                <Button className={classes.boughtBtn} variant="contained" onClick={() => handleOpenModal(present.id, present.name, present.link)}>
+                  Comprar presencialmente
                 </Button>
               </div>
             </div>
@@ -312,7 +319,7 @@ const List = () => {
               onClick={() => handleSelectPresent()}
               style={{ marginLeft: "1rem", minWidth: "70px" }}
             >
-              Enviar
+              {byLink ? "Ir para o site" : "Comprar presencialmente"}
             </Button>
           </div>
           <div
