@@ -18,12 +18,33 @@ export function listGiftsByStatus(status) {
 	.then((data) => data.data);
 }
 
-export function selectGift(giftId, personWhoBoughtIt, byLink = false) {
+export function selectGift(giftId, personWhoBoughtIt, otherInfos) {
 	  return fetch(`${BASE_URL}/gifts/select`, {
 			method: 'POST',
 			headers: {
 			'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ giftId, personWhoBoughtIt, byLink }),
+			body: JSON.stringify({ giftId, personWhoBoughtIt, byLink: false, otherInfos }),
 		}).then((response) => response.json());
+}
+
+export function getIpInfo() {
+		return fetch('https://api.ipify.org?format=json', {
+			method: 'GET',
+			headers: {
+			'Content-Type': 'application/json',
+			},
+		})
+		.then((response) => response.json())
+		.then((data) => {
+			console.log({data})
+			const ip = data.ip;
+
+			return fetch(`https://ipapi.co/${ip}/json/`, {
+				method: 'GET',
+				headers: {
+				'Content-Type': 'application/json',
+				},
+			}).then((response) => response.json());
+		});
 }

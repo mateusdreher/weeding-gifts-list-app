@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { listGifts, listGiftsByStatus, selectGift } from '../gifts.service'
+import { listGifts, listGiftsByStatus, selectGift, getIpInfo } from '../gifts.service'
 import ModalSuccess from '../components/ModalSucces';
 
 const useStyles = makeStyles((theme) => ({
@@ -122,8 +122,13 @@ const List = () => {
   const [selectedGift, setSelectedGift] = useState({id: '', name: ''});
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [hasGiftsAvailable, setHasGiftsAvailable] = useState(true);
+  const [ipInfo, setIpInfo] = useState({});
 
   useEffect(() => {
+    getIpInfo().then(response => {
+      setIpInfo(response);
+    });
+
     listGiftsByStatus('AVAILABLE')
       .then(response => {
         if (response?.length) {
@@ -144,8 +149,7 @@ const List = () => {
 
 
   const handleSelectPresent = () => {
-    console.log(selectedGift, inputValue)
-    selectGift(selectedGift.id, inputValue).then(response => {
+    selectGift(selectedGift.id, inputValue, ipInfo).then(response => {
       setOpenModal(false);
       setOpenSuccessModal(true);
     })
