@@ -146,17 +146,14 @@ const List = () => {
         setLoadingMain(false);
         if (response?.length) {
           setPresentsList(response);
-          console.log(response)
           setHasGiftsAvailable(true)
         } else {
           setPresentsList([]);
           setHasGiftsAvailable(false)
-          console.log(hasGiftsAvailable)
         }
       })
       .catch((err) => {
         setLoadingMain(false);
-        console.log({err});
         setPresentsList([]);
       })
   }
@@ -178,7 +175,6 @@ const List = () => {
   const handleOpenModal = (id, name, link, byLink = false) => {
     setSelectedGift({id, name, link});
     setByLink(byLink);
-    console.log({byLink})
     setOpenModal(true);
   };
 

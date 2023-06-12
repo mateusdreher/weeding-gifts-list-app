@@ -1,5 +1,4 @@
 const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3003';
-console.log('GAY', process.env);
 export function listGifts() {
   return fetch(`${BASE_URL}/gifts/list`)
 	.then((response) => {
@@ -37,7 +36,6 @@ export function getIpInfo() {
 		})
 		.then((response) => response.json())
 		.then((data) => {
-			console.log({data})
 			const ip = data.ip;
 
 			return fetch(`https://ipapi.co/${ip}/json/`, {
