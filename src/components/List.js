@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Modal } from "@material-ui/core";
+import { Button, Modal, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { listGifts, listGiftsByStatus, selectGift, getIpInfo } from '../gifts.service'
 import ModalSuccess from '../components/ModalSucces';
@@ -129,14 +129,21 @@ const List = () => {
   const [hasGiftsAvailable, setHasGiftsAvailable] = useState(true);
   const [ipInfo, setIpInfo] = useState({});
   const [byLink, setByLink] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingMain, setLoadingMain] = useState(false);
 
   useEffect(() => {
+    setLoadingMain(true);
     getIpInfo().then(response => {
       setIpInfo(response);
     });
+    listGiftsInitial();
+  }, []);
 
+  const listGiftsInitial = () => {
     listGiftsByStatus('AVAILABLE')
       .then(response => {
+        setLoadingMain(false);
         if (response?.length) {
           setPresentsList(response);
           console.log(response)
@@ -148,13 +155,14 @@ const List = () => {
         }
       })
       .catch((err) => {
+        setLoadingMain(false);
         console.log({err});
         setPresentsList([]);
       })
-  }, []);
-
-
+  }
+    
   const handleSelectPresent = () => {
+    setLoading(true);
     selectGift(selectedGift.id, inputValue, byLink, ipInfo).then(response => {
       setOpenModal(false);
       if (!byLink) {
@@ -163,6 +171,7 @@ const List = () => {
       }
 
       window.open(selectedGift.link, '_blank');
+      listGiftsInitial();
     })
   };
   
@@ -200,7 +209,16 @@ const List = () => {
       <p style={{color: "#fff"}}>Querido convidado aqui consta nossa lista de presentes que só é possível de existir graças a sua presença, sinta-se a vontade de escolher algum desses itens abaixo e compra-lo pelo site ou pela loja de sua preferência. Em pouco tempo estaremos nos mudando para nossa casa nova e seu presente será de muita valia.</p>
         
       </div>
-      <div className={classes.gridContainer}>
+
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        {
+          loadingMain && <CircularProgress size={60} style={{ color: '#eda787' }} />
+          
+        }
+      </div>
+      {
+        !loadingMain && 
+        <div className={classes.gridContainer}>
         {presentsList.map((present) => (
           <div key={present.id} className={classes.root}>
             <div className={classes.imgContainer}>
@@ -225,6 +243,7 @@ const List = () => {
           </div>
         ))}
       </div>
+      }
 
       
       <Modal
@@ -319,7 +338,12 @@ const List = () => {
               onClick={() => handleSelectPresent()}
               style={{ marginLeft: "1rem", minWidth: "70px" }}
             >
-              {byLink ? "Ir para o site" : "Comprar presencialmente"}
+              {
+                loading 
+                  ? <CircularProgress size={24} style={{ color: '#FFFFFF' }} /> 
+                  : byLink ? "Ir para o site" : "Comprar presencialmente"
+              }
+              
             </Button>
           </div>
           <div

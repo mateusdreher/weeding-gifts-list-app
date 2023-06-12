@@ -1,5 +1,5 @@
-const BASE_URL = process.env.API_URL || 'http://localhost:3003';
-
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3003';
+console.log('GAY', process.env);
 export function listGifts() {
   return fetch(`${BASE_URL}/gifts/list`)
 	.then((response) => {
