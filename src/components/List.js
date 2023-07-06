@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     fontSize: "1rem",
     marginBottom: "1rem",
-    color: "#eda787",
+    color: "#e37846",
   },
   linkBtn: {
     backgroundColor: "#eda787",
@@ -141,6 +141,8 @@ const List = () => {
   }, []);
 
   const listGiftsInitial = () => {
+    setInputValue("");
+    setLoading(false)
     listGiftsByStatus('AVAILABLE')
       .then(response => {
         setLoadingMain(false);

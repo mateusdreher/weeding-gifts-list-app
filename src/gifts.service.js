@@ -28,7 +28,7 @@ export function selectGift(giftId, personWhoBoughtIt, byLink = false, otherInfos
 }
 
 export function getIpInfo() {
-		return fetch('https://api.ipify.org?format=json', {
+		return fetch('http://ip-api.com/json', {
 			method: 'GET',
 			headers: {
 			'Content-Type': 'application/json',
@@ -36,13 +36,16 @@ export function getIpInfo() {
 		})
 		.then((response) => response.json())
 		.then((data) => {
-			const ip = data.ip;
+			return data;
 
-			return fetch(`https://ipapi.co/${ip}/json/`, {
-				method: 'GET',
-				headers: {
-				'Content-Type': 'application/json',
-				},
-			}).then((response) => response.json());
-		});
+			// return fetch(`https://ipapi.co/${ip}/json/`, {
+			// 	method: 'GET',
+			// 	headers: {
+			// 	'Content-Type': 'application/json',
+			// 	},
+			// }).then((response) => response.json());
+		})
+		.catch((error) => {
+			console.log('Error:', error);
+		})
 }
