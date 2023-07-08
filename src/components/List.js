@@ -258,7 +258,7 @@ const List = () => {
               </div>
               <div>
                 <div className={classes.name}>{present.name}</div>
-                <div className={classes.price}>R$ {present.price}</div>
+                <div className={classes.price}>{present.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
               </div>
               <div className={classes.buttonGroup}>
                 <Button
