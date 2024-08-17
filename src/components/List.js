@@ -43,6 +43,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
     color: "#e37846",
     textAlign: "center",
+  },
+ qtd: {
+    fontWeight: "bold",
+    fontSize: "1.2rem",
+    color: "#eda787",
+    textAlign: "center",
     marginBottom: "1rem",
   },
   buttonGroup: {
@@ -215,8 +221,8 @@ const List = () => {
     });
   };
 
-  const handleOpenModal = (id, name, link, image, byLink = false) => { // Adicionado image como parâmetro
-    setSelectedGift({ id, name, link, image });
+  const handleOpenModal = (id, name, link, image, byLink = false, expectedQuantity, boughtQuantity) => { // Adicionado image como parâmetro
+    setSelectedGift({ id, name, link, image, expectedQuantity, boughtQuantity });
     setByLink(byLink);
     setOpenModal(true);
   };
@@ -228,6 +234,11 @@ const List = () => {
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
+
+  const handleOpenGift = () => {
+    console.log(selectedGift)
+    window.open(selectedGift.link)
+  }
 
   return (
     <div style={{ padding: "2rem 1rem" }}>
@@ -252,13 +263,14 @@ const List = () => {
       {!loadingMain && (
         <div className={classes.gridContainer}>
           {presentsList.map((present) => (
-            <div key={present.id} className={classes.root}>
+            <div key={present.id} className={classes.root}  onClick={() => handleOpenModal(present.id, present.name, present.link, present.image, present.expectedQuantity, present.boughtQuantity)}>
               <div className={classes.imgContainer}>
                 <img className={classes.img} src={present.image} alt="" />
               </div>
               <div>
-                <div className={classes.name}>{present.name}</div>
-                <div className={classes.price}>{present.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                <div className={classes.name}  onClick={() => handleOpenModal(present.id, present.name, present.link, present.image, present.expectedQuantity, present.boughtQuantity)}>{present.name}</div>
+                <div className={classes.price}>{present.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>  
+                <div className={classes.qtd}><b>{present.boughtQuantity}/{present.expectedQuantity}</b></div>
               </div>
               <div className={classes.buttonGroup}>
                 <Button
@@ -268,8 +280,8 @@ const List = () => {
                 >
                   Comprar no site
                 </Button>
-                <Button className={classes.boughtBtn} variant="contained" onClick={() => handleOpenModal(present.id, present.name, present.link, present.image)}>
-                  Comprar presencialmente
+                <Button className={classes.boughtBtn} variant="contained" onClick={() => handleOpenModal(present.id, present.name, present.link, present.image, present.expectedQuantity, present.boughtQuantity)}>
+                  Comprar por fora
                 </Button>
               </div>
             </div>
@@ -321,7 +333,7 @@ const List = () => {
             </div>
           )}
           <div>
-            <h4 style={{ color: "#fff" }}>Você escolheu comprar o presente <span style={{ margin: "0.6rem 0 -0.5rem 0", color: "#eda787", fontStyle: "italic", fontWeight: "bold" }}>{selectedGift.name}</span> {!byLink ? 'presencialemnte, ' : 'pelo site, '} se estiver correto: </h4>
+            <h4 style={{ color: "#fff" }}>Você escolheu comprar o presente <span style={{ margin: "0.6rem 0 -0.5rem 0", color: "#eda787", fontStyle: "italic", fontWeight: "bold" }}>{selectedGift.name}</span> {!byLink ? 'por fora, ' : 'pelo site, '} se estiver correto: </h4>
           </div>
           <div
             style={{
@@ -379,6 +391,9 @@ const List = () => {
                 : byLink ? "Ir para o site" : "Comprar"
               }
             </Button>
+          </div>
+          <div style={{color: '#eda787', cursor: 'pointer'}} onClick={handleOpenGift}>
+            <i>Acessar o produto sem comprar</i>
           </div>
           <div
             style={{
