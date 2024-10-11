@@ -17,13 +17,13 @@ export function listGiftsByStatus(status) {
 	.then((data) => data.data);
 }
 
-export function selectGift(giftId, personWhoBoughtIt, byLink = false, otherInfos) {
+export function selectGift(giftId, personWhoBoughtIt, byLink = false, otherInfos, email) {
 	  return fetch(`${BASE_URL}/gifts/select`, {
 			method: 'POST',
 			headers: {
 			'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ giftId, personWhoBoughtIt, byLink, otherInfos }),
+			body: JSON.stringify({ giftId, personWhoBoughtIt, byLink, otherInfos, email }),
 		}).then((response) => response.json());
 }
 
